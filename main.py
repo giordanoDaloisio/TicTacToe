@@ -27,10 +27,34 @@ def minmax(game, state, player):
     return currval, beststate
 
 
-def alpha_beta(game, state, player, alpha = float('-inf'), beta = float('inf')):
+def alpha_beta(game, state, player, alpha=float('-inf'), beta=float('inf')):
     beststate = state
     if state.complete():
-        return
+        return h.heuristic(state, MAX), state
+    if player is MAX:
+        currval = float('-inf')
+        for node in game.neighbors(state, player):
+            val, state = alpha_beta(game, node, MIN, alpha, beta)
+            alpha = max(alpha, val)
+            if val > currval:
+                currval = val
+                beststate = node
+            if alpha >= beta:
+                break
+        return currval, beststate
+    if player is MIN:
+        currval = float('inf')
+        for node in game.neighbors(state, player):
+            val, state = alpha_beta(game, node, MAX, alpha, beta)
+            beta = min(beta, val)
+            if val < currval:
+                currval = val
+                beststate = node
+            if alpha >= beta:
+                break
+        return currval, beststate
+
+
 
 
 def human_move(game, player):
@@ -94,7 +118,7 @@ def man_vs_ai(game):
             continue
         if human_turn is "n":
             start_time = time.time()
-            val, state = minmax(game, game.state, MAX)
+            val, state = alpha_beta(game, game.state, MAX)
             game.makeMove(state)
             human_turn = "y"
             print("Value: "+str(val))
