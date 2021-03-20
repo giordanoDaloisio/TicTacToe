@@ -22,6 +22,7 @@ class TicTacToeState:
         self.representation = representation
         self.parent = parent
 
+    # player equal to X or O
     def solution(self, player):
         grid = self.representation.grid
         solutions = [
@@ -40,7 +41,7 @@ class TicTacToeState:
 
     def full(self):
         for row in self.representation.grid:
-            if 0 in row:
+            if "-" in row:
                 return False
         return True
 
@@ -61,7 +62,7 @@ class TicTacToeGame:
         out = set([])
         for i in range(0, len(repr.grid)):
             for j in range(0, len(repr.grid[i])):
-                if repr.grid[i][j] == 0:
+                if repr.grid[i][j] == "-":
                     new_grid = deepcopy(repr.grid)
                     new_grid[i][j] = player
                     new_state = TicTacToeState(TicTacToeRepr(new_grid), self.state)
@@ -85,7 +86,7 @@ class TicTacToeGame:
             "9": (2, 2)
         }
         x, y = position_dict[pos]
-        if repr.grid[x][y] == 0:
+        if repr.grid[x][y] == "-":
             new_grid = deepcopy(repr.grid)
             new_grid[x][y] = player
             return TicTacToeState(TicTacToeRepr(new_grid), self.state)

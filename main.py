@@ -132,5 +132,5 @@ def man_vs_ai(game):
         print("Draw!")
 
 
-game = TicTacToeGame([[0 for i in range(0, 3)] for j in range(0, 3)])
+game = TicTacToeGame([["-" for i in range(0, 3)] for j in range(0, 3)])
 man_vs_ai(game)
